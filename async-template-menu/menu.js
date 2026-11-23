@@ -101,6 +101,7 @@
         clearTimeout(entry.timer);
         clearTimeout(entry.settle);
         entry.ready = entry.failed = false;
+        entry.frame.removeAttribute('data-atm-ready');
         entry.width = undefined;
         entry.formRadius = undefined;
         entry.frame.removeAttribute('data-atm-form-layout');
@@ -135,6 +136,7 @@
         clearTimeout(entry.timer);
         entry.height = height;
         entry.ready = true;
+        entry.frame.setAttribute('data-atm-ready', '');
         if (entry === active) updatePanel();
     }
 
@@ -145,6 +147,7 @@
         const { type, width, height, hash, formLayout } = event.data;
 
         if (type === 'size' && Number.isFinite(height) && height >= 0) {
+            if (entry.ready && entry === active && dialog.open && dialog.hasAttribute('data-expanded')) return;
             if (formLayout && Number.isFinite(formLayout.left) && Number.isFinite(width) && width > 0) {
                 entry.frame.setAttribute('data-atm-form-layout', '');
                 // Measure the form again once its iframe has the page's breakpoints.

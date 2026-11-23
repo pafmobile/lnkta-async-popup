@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LNKTA Async Popup
  * Description: Open one saved Elementor template as an on-demand menu, retaining it until page navigation.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Requires PHP: 7.4
  * Update URI: https://github.com/pafmobile/lnkta-async-popup
  */
@@ -55,8 +55,8 @@ add_action('template_redirect', function() {
 add_filter('template_include', function($path){ return atm_frame_request() ? __DIR__.'/frame.php' : $path; },99);
 add_action('wp_enqueue_scripts',function(){
  $o=atm_options(); if(atm_frame_request() || !atm_ids() || !did_action('elementor/loaded')) return;
- wp_enqueue_style('atm-menu',plugins_url('menu.css',__FILE__),[],'1.2.0');
- wp_enqueue_script('atm-menu',plugins_url('menu.js',__FILE__),[],'1.2.0',true);
+ wp_enqueue_style('atm-menu',plugins_url('menu.css',__FILE__),[],'1.2.1');
+ wp_enqueue_script('atm-menu',plugins_url('menu.js',__FILE__),[],'1.2.1',true);
  wp_localize_script('atm-menu','ATMMenu',['ids'=>array_values(array_filter(atm_ids(),'atm_valid')),'width'=>$o['width'],'preload'=>(bool)$o['preload']]);
 });
 

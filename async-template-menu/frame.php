@@ -54,6 +54,30 @@ html{overflow-x:hidden;}
 .atm-media-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;align-items:start;}
 .atm-media-video{aspect-ratio:16/9;background:#111;}
 .atm-media-video iframe{display:block;width:100%;height:100%;border:0;}
+.atm-expanded-layout {
+    box-sizing: border-box;
+    padding-inline: max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-right));
+}
+#atm-template-content.atm-expanded-layout { max-inline-size: none; }
+.atm-expanded-layout > .elementor,
+.atm-expanded-layout > .elementor > *,
+.atm-expanded-layout :is(.e-con, .e-con-inner, .elementor-container):has(:is(form, .atm-media-image, .atm-media-gallery, .atm-media-video)),
+.atm-expanded-layout.atm-form-layout form[data-element_type="e-form"] {
+    inline-size: 100% !important;
+    max-inline-size: 100% !important;
+    box-sizing: border-box;
+}
+.atm-expanded-layout.atm-form-layout form[data-element_type="e-form"] { min-block-size: 100dvh; }
+.atm-expanded-layout.atm-form-layout form[data-element_type="e-form"] > textarea { flex-grow: 1; }
+.atm-expanded-layout .atm-media-image img {
+    inline-size: 100%;
+    max-block-size: max(12rem, calc(100dvh - 5rem));
+    object-fit: contain;
+}
+.atm-expanded-layout .atm-media-video {
+    max-inline-size: max(16rem, calc((100dvh - 5rem) * 16 / 9));
+    margin-inline: auto;
+}
 .atm-form-message{display:none;margin:0;color:var(--lnkta-text, currentColor);}
 form.form-state-success .atm-form-message[data-e-type="e-form-success-message"],
 form.form-state-error .atm-form-message[data-e-type="e-form-error-message"]{display:block;}
@@ -65,5 +89,5 @@ form.form-state-error .atm-form-message[data-e-type="e-form-error-message"]{disp
  <p class="atm-form-message" data-element_type="e-form-error-message" data-e-type="e-form-error-message" role="alert" tabindex="-1"><?php esc_html_e('Your message could not be sent. Please try again.', 'async-template-menu'); ?></p>
 </template>
 <?php wp_footer(); ?>
-<script src="<?php echo esc_url(add_query_arg('ver', '1.2.0', plugins_url('frame.js', __FILE__))); ?>"></script>
+<script src="<?php echo esc_url(add_query_arg('ver', '1.2.1', plugins_url('frame.js', __FILE__))); ?>"></script>
 </body></html>

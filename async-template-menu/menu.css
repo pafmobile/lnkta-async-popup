@@ -70,7 +70,6 @@
 #atm-dialog[open][data-expanded] {
     --atm-expanded-top: calc(56px + env(safe-area-inset-top, 0px));
     --atm-expanded-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    --atm-expanded-content-top: max(var(--atm-expanded-top), calc((100% - var(--atm-panel-height, 88px)) / 2));
     width: 100vw;
     height: 100vh;
     height: 100dvh;
@@ -80,14 +79,11 @@
     background: var(--lnkta-bg, Canvas);
 }
 
-#atm-dialog[data-expanded] > iframe[data-active] {
-    top: var(--atm-expanded-content-top);
-    left: max(var(--atm-gutter), calc((100% - var(--atm-frame-width, var(--atm-limit-width))) / 2));
-    height: calc(100% - var(--atm-expanded-content-top) - var(--atm-expanded-bottom));
-}
-
-#atm-dialog[data-expanded] > iframe[data-active][data-atm-form-layout] {
-    left: calc((100% - var(--atm-panel-width)) / 2 + var(--atm-frame-offset, 0px));
+#atm-dialog[open][data-expanded] > iframe[data-active][data-atm-ready] {
+    top: var(--atm-expanded-top);
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--atm-expanded-top) - var(--atm-expanded-bottom));
 }
 
 #atm-dialog .atm-toolbar {

@@ -1,4 +1,4 @@
-LNKTA Async Popup 1.2.0
+LNKTA Async Popup 1.2.1
 
 1. Upload the ZIP through Plugins > Add New > Upload Plugin. When updating an existing installation, replace the current version.
 2. In Settings > LNKTA Async Popup, allow the IDs of the published Elementor templates you want to open, separated by commas.
@@ -49,6 +49,6 @@ Store a YouTube URL in the ACF field. A Text field also accepts a YouTube video 
 
 Standalone Atomic Forms keep the page's responsive breakpoints in the iframe. The dialog follows the rendered form's border box and corner radius, with viewport gutters on small screens. The frame skips Atomic CSS from the source page so shared class names use the template's styles.
 
-Full screen: A button beside Close expands the open panel to the browser viewport. Press the same button to restore the template's size. The existing iframe and form entries are retained. Closing the panel resets its size.
+Full screen: A button beside Close expands both the panel and its content to the browser viewport. Press the same button to restore the template's size. The existing iframe and form entries are retained. Closing the panel resets its size.
 
 Updates: Install this version once to receive future stable GitHub releases in WordPress. To install them automatically, enable auto-updates for LNKTA Async Popup on the Plugins screen.

@@ -57,6 +57,7 @@
 
     function measure() {
         pending = undefined;
+        if (content.classList.contains('atm-expanded-layout')) return;
         const form = standaloneAtomicForm();
         content.classList.toggle('atm-form-layout', Boolean(form));
         const bounds = form?.getBoundingClientRect();
@@ -79,6 +80,28 @@
 
     function scheduleMeasure() {
         if (pending === undefined) pending = requestAnimationFrame(measure);
+    }
+
+    function syncExpandedLayout() {
+        const frame = window.frameElement;
+        const dialog = frame?.closest('#atm-dialog');
+        if (!dialog) return;
+
+        function sync() {
+            const expanded = dialog.open && dialog.hasAttribute('data-expanded') &&
+                frame.hasAttribute('data-active') && frame.hasAttribute('data-atm-ready');
+            if (expanded === content.classList.contains('atm-expanded-layout')) return;
+
+            content.classList.toggle('atm-expanded-layout', expanded);
+            previousMeasurement = undefined;
+            scheduleMeasure();
+        }
+
+        const observer = new MutationObserver(sync);
+        observer.observe(dialog, { attributes: true, attributeFilter: ['open', 'data-expanded'] });
+        observer.observe(frame, { attributes: true, attributeFilter: ['data-active', 'data-atm-ready'] });
+        window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
+        sync();
     }
 
     function inheritSiteTheme() {
@@ -179,6 +202,7 @@
     inheritSiteTheme();
     addMissingFormMessages();
     updateMediaHeadings();
+    syncExpandedLayout();
     syncYouTubePlayers();
     new ResizeObserver(scheduleMeasure).observe(content);
     window.addEventListener('load', scheduleMeasure, { once: true });
