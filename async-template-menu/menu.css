@@ -1,0 +1,137 @@
+#atm-dialog {
+    --atm-gutter: 16px;
+    --atm-limit-width: calc(100vw - 2 * var(--atm-gutter));
+    --atm-limit-height: calc(100vh - 2 * var(--atm-gutter));
+    --atm-limit-height: calc(100dvh - 2 * var(--atm-gutter));
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    border: 0;
+    padding: 0;
+    width: min(var(--atm-panel-width, 420px), var(--atm-limit-width));
+    max-width: none;
+    height: min(var(--atm-panel-height, 88px), var(--atm-limit-height));
+    max-height: none;
+    background: transparent;
+    color: var(--lnkta-text, CanvasText);
+    overflow: clip;
+    overscroll-behavior: contain;
+}
+
+/* Keep preloaded frames laid out while excluding the closed dialog from focus. */
+#atm-dialog:not([open]) {
+    display: block;
+    inset: 0 auto auto -200vw;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#atm-dialog::backdrop { background: rgb(0 0 0 / .45); }
+
+@media (prefers-reduced-motion: no-preference) {
+    #atm-dialog[open]:has(> .atm-status[hidden]) {
+        animation: atm-panel-enter 240ms cubic-bezier(.22, 1, .36, 1);
+    }
+
+    #atm-dialog[open]::backdrop {
+        animation: atm-backdrop-enter 200ms ease-out;
+    }
+}
+
+@keyframes atm-panel-enter {
+    from { opacity: 0; transform: translateY(10px) scale(.985); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes atm-backdrop-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#atm-dialog iframe {
+    position: absolute;
+    inset: 0 auto auto 0;
+    display: block;
+    width: min(var(--atm-frame-width, var(--atm-limit-width)), var(--atm-limit-width));
+    max-width: none;
+    height: var(--atm-limit-height);
+    border: 0;
+}
+
+#atm-dialog iframe:not([data-active]) {
+    inset-inline-start: -200vw;
+    visibility: hidden;
+}
+
+/* Reveal the form's box while the iframe keeps the page's responsive viewport. */
+#atm-dialog iframe[data-atm-form-layout] { width: 100vw; }
+#atm-dialog iframe[data-atm-form-layout][data-active] { left: var(--atm-frame-offset, 0px); }
+
+#atm-dialog[open][data-expanded] {
+    --atm-expanded-top: calc(56px + env(safe-area-inset-top, 0px));
+    --atm-expanded-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    --atm-expanded-content-top: max(var(--atm-expanded-top), calc((100% - var(--atm-panel-height, 88px)) / 2));
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0 !important; /* Override the measured form corner radius. */
+    background: var(--lnkta-bg, Canvas);
+}
+
+#atm-dialog[data-expanded] > iframe[data-active] {
+    top: var(--atm-expanded-content-top);
+    left: max(var(--atm-gutter), calc((100% - var(--atm-frame-width, var(--atm-limit-width))) / 2));
+    height: calc(100% - var(--atm-expanded-content-top) - var(--atm-expanded-bottom));
+}
+
+#atm-dialog[data-expanded] > iframe[data-active][data-atm-form-layout] {
+    left: calc((100% - var(--atm-panel-width)) / 2 + var(--atm-frame-offset, 0px));
+}
+
+#atm-dialog .atm-toolbar {
+    position: absolute;
+    z-index: 1;
+    inset: 8px 8px auto auto;
+    display: flex;
+    gap: 4px;
+    pointer-events: none;
+}
+
+#atm-dialog[data-expanded] .atm-toolbar {
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: calc(8px + env(safe-area-inset-right, 0px));
+}
+
+#atm-dialog :is(.atm-close, .atm-expand) {
+    display: grid;
+    place-items: center;
+    pointer-events: auto;
+    appearance: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--lnkta-bg, Canvas);
+    color: inherit;
+    font: 28px/1 sans-serif;
+    cursor: pointer;
+}
+
+#atm-dialog .atm-expand[hidden],
+#atm-dialog .atm-restore-icon,
+#atm-dialog[data-expanded] .atm-expand-icon { display: none; }
+#atm-dialog[data-expanded] .atm-restore-icon { display: inline; }
+
+#atm-dialog .atm-status {
+    position: absolute;
+    inset: 0;
+    padding: 24px 56px 24px 24px;
+    background: var(--lnkta-bg, Canvas);
+    font: 16px/1.5 sans-serif;
+}
+
+#atm-dialog .atm-status[hidden] { display: none; }
+#atm-dialog button:focus-visible { outline: 2px solid currentColor; outline-offset: -3px; }
